@@ -24,18 +24,20 @@ namespace AutoSub
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Activate the auto subscribe program?","Activate?",MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Activate the auto subscribe program?", "Activate?", MessageBoxButtons.YesNo);
             if (!(result == DialogResult.Yes))
             {
                 Application.Exit();
+                return;
             }
-            timer1.Enabled = true;
             System.Diagnostics.Process.Start("https://www.youtube.com/channel/UC-4R7Zp4G5MDaUl0qRQ8waw");
+            TakeScreenshots();
         }
 
         Bitmap CaptureScreen()
         {
             var image = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            MessageBox.Show("AutoSub: Analysing screenshot, this may take about a minute.");
             var gfx = Graphics.FromImage(image);
             gfx.CopyFromScreen(Screen.PrimaryScreen.Bounds.X, Screen.PrimaryScreen.Bounds.Y, 0, 0, Screen.PrimaryScreen.Bounds.Size, CopyPixelOperation.SourceCopy);
             return image;
@@ -51,10 +53,10 @@ namespace AutoSub
 
         private void MoveCursor(Point ad)
         {
+            //Moves the cursor to the ad
             this.Cursor = new Cursor(Cursor.Current.Handle);
             Cursor.Position = new Point(ad.X + 10, ad.Y + 10);
             LeftMouseClick(ad.X + 10, ad.Y + 10);
-            timer1.Enabled = false;
             Application.Exit();
         }
 
@@ -72,28 +74,52 @@ namespace AutoSub
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void AiDetection(Bitmap screenshot, Bitmap subimage, Bitmap subimage2)
+        {
+            try
+            {
+                // create template matching algorithm's instance
+                // (set similarity threshold to 80%)
+                AForge.Imaging.ExhaustiveTemplateMatching tm = new AForge.Imaging.ExhaustiveTemplateMatching(0.85f);
+                // find all matchings with specified above similarity
+
+                AForge.Imaging.TemplateMatch[] matchings = tm.ProcessImage(screenshot, subimage);
+                AForge.Imaging.TemplateMatch[] matchings2 = tm.ProcessImage(screenshot, subimage2);
+                if (matchings.Length > 0)
+                {
+                    MoveCursor(matchings[0].Rectangle.Location);
+                }
+                else if (matchings2.Length > 0)
+                {
+                    MoveCursor(matchings2[0].Rectangle.Location);
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("Auto Sub: No matchings, taking next screenshot. " + 
+                        Environment.NewLine + "If it fails three times, I would quit the program.","No Matchings",MessageBoxButtons.RetryCancel);
+                    if (result == DialogResult.Cancel)
+                    {
+                        Application.Exit();
+                        return;
+                    }
+                    TakeScreenshots();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error lol");
+            }
+        }
+
+        private void TakeScreenshots()
         {
             Bitmap sourceImage = ConvertTo24bpp(CaptureScreen());
             Assembly myAssembly = Assembly.GetExecutingAssembly();
             Stream myStream = myAssembly.GetManifestResourceStream("AutoSub.sub.jpg");
             Bitmap template = new Bitmap(myStream);
-            // create template matching algorithm's instance
-            // (set similarity threshold to 80%)
-
-            ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching(0.80f);
-            // find all matchings with specified above similarity
-
-            TemplateMatch[] matchings = tm.ProcessImage(sourceImage, template);
-
-            BitmapData data = sourceImage.LockBits(
-                 new Rectangle(0, 0, sourceImage.Width, sourceImage.Height),
-                 ImageLockMode.ReadWrite, sourceImage.PixelFormat);
-            if (matchings.Length > 0)
-            {
-                Drawing.Rectangle(data, matchings[0].Rectangle, Color.White);
-                MoveCursor(matchings[0].Rectangle.Location);
-            }
+            myStream = myAssembly.GetManifestResourceStream("AutoSub.sub2.jpg");
+            Bitmap template2 = new Bitmap(myStream);
+            AiDetection(sourceImage, template, template2);
         }
     }
 }

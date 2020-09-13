@@ -98,5 +98,9 @@
   <ItemGroup>
     <EmbeddedResource Include="sub.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="sub2.jpg" />
+    <EmbeddedResource Include="sub3.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
