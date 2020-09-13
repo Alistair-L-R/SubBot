@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoSub", "AutoSub.csproj", "{66823AF3-F331-4146-B261-A8B1CC820DEB}"
+EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "AutoSubSetup", "..\AutoSubSetup\AutoSubSetup.aiproj", "{6AB7705B-53DA-4D7A-A577-9503CBC3621B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66823AF3-F331-4146-B261-A8B1CC820DEB}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{66823AF3-F331-4146-B261-A8B1CC820DEB}.All|Any CPU.Build.0 = Release|Any CPU
+		{66823AF3-F331-4146-B261-A8B1CC820DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66823AF3-F331-4146-B261-A8B1CC820DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66823AF3-F331-4146-B261-A8B1CC820DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66823AF3-F331-4146-B261-A8B1CC820DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB7705B-53DA-4D7A-A577-9503CBC3621B}.All|Any CPU.ActiveCfg = DefaultBuild
+		{6AB7705B-53DA-4D7A-A577-9503CBC3621B}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{6AB7705B-53DA-4D7A-A577-9503CBC3621B}.Release|Any CPU.ActiveCfg = DefaultBuild
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C15BC104-449A-4F3B-B486-1E8D26162D7B}
+	EndGlobalSection
+EndGlobal
